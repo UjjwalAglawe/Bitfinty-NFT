@@ -26,7 +26,7 @@ function renderSoldItems(items) {
               </h5>
           
           <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
-             <strong> For {ethers.utils.formatEther(item.totalPrice)} ETH <br></br> Recieved {ethers.utils.formatEther(item.price)} ETH</strong>
+             <strong> For {ethers.utils.formatEther(item.totalPrice)} ETH <br></br> Recieved {ethers.utils.formatEther(item.price)} BIT</strong>
           </p>
          
       </div>
@@ -53,8 +53,9 @@ export default function MyItem({ marketplace, nft, account }) {
     let soldItems = []
     for (let indx = 1; indx <= itemCount; indx++) {
       const i = await marketplace.items(indx)
-      
-      if (i.seller === account) {
+      // const owner=await marketplace.
+      console.log(i.ogOwner);
+      if (i.ogOwner === account) {
         
         // get uri url from nft contract
         const uri = await nft.tokenURI(i.tokenId)

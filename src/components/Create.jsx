@@ -109,11 +109,10 @@ const Create = ({ marketplace, nft }) => {
       
     };
 
-
     const mintThenList = async (uri) => { 
-      // toast.info("Confirm to Mint the NFT", {
-      //   position: "top-center"
-      // })
+      toast.info("Confirm to Mint the NFT", {
+        position: "top-center"
+      })
     const tx1=  await(await nft.mint(uri))
   
     toast.info("Wait till transaction Confirms....", {
@@ -122,38 +121,96 @@ const Create = ({ marketplace, nft }) => {
   
     await tx1.wait()
       const id = await nft.tokenCount()
+    
+      console.log("Approve transaction confirmed ");
+      console.log("Now initializing makeItem");
   
-      toast.info("Approve To sell NFT on marketplace", {position:"top-center"})
-      
-    const tx2 = await(await nft.approve(marketplace.address, id))
+      toast.info("Confirm to Add Item to Marketplace", {position:"top-center"});
   
-    toast.info("Wait till transaction Confirms....", {
-      position: "top-center"
-    })
-  
-    await tx2.wait()
-    console.log("Aprrove transaction confirmed ");
-    console.log("Now initializing make iTem");
-      
-      toast.info("Confirm to Add Item to Marketplace", {position:"top-center"})
+      // Call makeItem without specifying listing price
       const listingPrice = ethers.utils.parseEther(forminfo.price.toString())
-      console.log("This is listing price")
-      console.log(listingPrice)
-      
-    //  const tx3 =  await(await marketplace.makeItem(nft.address, id, listingPrice))
-    // const tx3 = await marketplace.makeItem(nft.address, id, listingPrice, { gasLimit: estimatedGasLimit * 2 });
-    // const gasLimit = 0.00001; // Adjust this value according to your estimation
-    const tx3 = await (await marketplace.makeItem(nft.address, id, listingPrice))
+      const tx3 = await (await marketplace.makeItem(nft.address, id, listingPrice)).wait();
+  
+      console.log("MakeItem transaction confirmed");
+      toast.success("NFT added to marketplace successfully", {position:"top-center"});
+  }
 
-     toast.info("Wait till transaction Confirms....", {
-      position: "top-center"
-    })
+    //****************************************************************************** */
+    // const mintThenList = async (uri) => { 
+    //   // toast.info("Confirm to Mint the NFT", {
+    //   //   position: "top-center"
+    //   // })
+    // const tx1=  await(await nft.mint(uri))
   
-    await tx3.wait()
-      toast.success("NFT added to marketplace successfully", {position:"top-center"})
-    }
+    // toast.info("Wait till transaction Confirms....", {
+    //   position: "top-center"
+    // })
+  
+    // await tx1.wait()
+    //   const id = await nft.tokenCount()
   
   
+    // console.log("Aprrove transaction confirmed ");
+    // console.log("Now initializing make iTem");
+      
+    //   toast.info("Confirm to Add Item to Marketplace", {position:"top-center"})
+    //   const listingPrice = ethers.utils.parseEther(forminfo.price.toString())
+    //   console.log("This is listing price")
+    //   console.log(listingPrice)
+      
+  
+    // const tx3 = await (await marketplace.makeItem(nft.address, id, listingPrice))
+
+    //  toast.info("Wait till transaction Confirms....", {
+    //   position: "top-center"
+    // })
+  
+    // await tx3.wait()
+    //   toast.success("NFT added to marketplace successfully", {position:"top-center"})
+    // }
+  
+  //********************************************************************* */
+  //   const mintThenList = async (uri, privateKey) => {
+  //     // Mint NFT
+  //     const tx1 = await (await nft.mint(uri)).wait();
+  //     console.log("Mint transaction confirmed");
+  
+  //     // Wait for confirmation
+  //     console.log("Now initializing makeItem");
+  
+  //     // Get token id
+  //     const id = await nft.tokenCount();
+  
+  //     // Add Item to Marketplace
+  //     const listingPrice = ethers.utils.parseEther(forminfo.price.toString());
+  
+  //     // Sign the transaction
+  //     const signedTx = await signer.signTransaction({
+  //         to: marketplace.address,
+  //         value: 0, // or any value if required
+  //         data: marketplace.interface.encodeFunctionData("makeItem", [nft.address, id, listingPrice]),
+  //         gasLimit: 3000000, // adjust gas limit as needed
+  //         gasPrice: ethers.utils.parseUnits('10', 'gwei'), // adjust gas price as needed
+  //         nonce: await provider.getTransactionCount(signer.address)
+  //     });
+  
+  //     // Send the signed transaction
+  //     const tx3 = await provider.sendTransaction(signedTx);
+  //     console.log("MakeItem transaction sent:", tx3.hash);
+  
+  //     // Wait for confirmation
+  //     await tx3.wait();
+  
+  //     console.log("MakeItem transaction confirmed");
+  //     toast.success("NFT added to marketplace successfully", { position: "top-center" });
+  // }
+  
+
+
+
+
+
+
 
 
   return (
